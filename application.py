@@ -22,9 +22,9 @@ def connect():
     return connection
 
 
-app = Flask(__name__)
-app.config['ELASTICSEARCH_URL'] = 'http://localhost:9200/'
-es = Elasticsearch([app.config['ELASTICSEARCH_URL']])
+application = Flask(__name__)
+application.config['ELASTICSEARCH_URL'] = 'http://localhost:9200/'
+es = Elasticsearch([application.config['ELASTICSEARCH_URL']])
 mongodb_connection = connect()
 
 
@@ -35,12 +35,12 @@ def set_china_cookie(url):
     return response
 
 
-@app.route('/')
+@application.route('/')
 def default_page():
     return redirect(url_for('index'))
 
 
-@app.route('/index', endpoint='index')
+@application.route('/index', endpoint='index')
 def index_page():
     if COOKIE_CHINA_FLAG not in request.cookies:
         return set_china_cookie(request.url)
@@ -50,7 +50,7 @@ def index_page():
         return render_template("index.html", china_flag=china_flag)
 
 
-@app.route('/contact', endpoint='contact')
+@application.route('/contact', endpoint='contact')
 def contact_page():
     if COOKIE_CHINA_FLAG not in request.cookies:
         return set_china_cookie(request.url)
@@ -60,7 +60,7 @@ def contact_page():
         return render_template("contact.html", china_flag=china_flag)
 
 
-@app.route('/feedback', endpoint='feedback', methods=['POST'])
+@application.route('/feedback', endpoint='feedback', methods=['POST'])
 def feedback():
     # TODO: send email does not work, may be the smtp issue???
     form = request.form
@@ -76,7 +76,7 @@ def feedback():
     return redirect(url_for('index'))
 
 
-@app.route('/bootstrap', endpoint='bootstrap')
+@application.route('/bootstrap', endpoint='bootstrap')
 def bootstrap():
     '''
     if collection is empty, insert some sample data for debug and test
@@ -89,7 +89,7 @@ def bootstrap():
     return json_response(dumps(one_record), 200)
 
 
-@app.route('/cleanall', endpoint='cleanall')
+@application.route('/cleanall', endpoint='cleanall')
 def cleanall():
     '''
     delete all records in the collection
@@ -107,7 +107,7 @@ def web_data_initilize(keys):
     return web_data
 
 
-@app.route('/report', endpoint='report')
+@application.route('/report', endpoint='report')
 def report_page():
     if COOKIE_CHINA_FLAG not in request.cookies:
         return set_china_cookie(request.url)
@@ -172,7 +172,7 @@ def report_page():
                                where_do_visitors_go_on=where_do_visitors_go_on, china_flag=china_flag)
 
 
-@app.template_filter('translation')
+@application.template_filter('translation')
 def _jinja2_filter_translation(in_string, china_flag):
     '''
     return translations, only english or chinese
@@ -190,4 +190,4 @@ def _jinja2_filter_translation(in_string, china_flag):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    application.run(host='0.0.0.0')
