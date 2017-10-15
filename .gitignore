@@ -4,6 +4,7 @@
 WebReportFE-ENV/*
 WebReportFE-dev/*
 WebReportFrontEnd-ENV/*
+WebReportFrontEnd-dev/*
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
