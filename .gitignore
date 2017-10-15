@@ -2,7 +2,7 @@
 .Python
 .idea/*
 WebReportFE-ENV/*
-
+WebReportFE-dev/*
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
