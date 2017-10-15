@@ -1,0 +1,9 @@
+*.pyc
+.Python
+.idea/*
+WebReportFE-ENV/*
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
