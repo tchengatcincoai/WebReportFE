@@ -1,0 +1,5 @@
+1. Install MongoDB
+2. Install ElasticSearch
+3. Install packages via "pip install -r requirements.txt"
+4. Start a MongoDB server via running "mongod" in terminal
+5. Run WebReportFE.py

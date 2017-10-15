@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Website Report</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ url_for("static", filename="vendors/bootstrap/dist/css/bootstrap.min.css") }}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{ url_for("static", filename="vendors/font-awesome/css/font-awesome.min.css") }}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{{ url_for("static", filename="vendors/nprogress/nprogress.css") }}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{{ url_for("static", filename="vendors/iCheck/skins/flat/green.css") }}" rel="stylesheet">
+
+    <!-- bootstrap-progressbar -->
+    <link href="{{ url_for("static", filename="vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css") }}" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="{{ url_for("static", filename="vendors/jqvmap/dist/jqvmap.min.css") }}" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{ url_for("static", filename="vendors/bootstrap-daterangepicker/daterangepicker.css") }}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{{ url_for("static", filename="build/css/custom.min.css") }}" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="index.html" class="site_title"><i class="fa fa-files-o"></i> <span> {{ "Website Report"|translation(china_flag) }}</span></a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <ul class="nav side-menu">
+                            <li><a href="{{ url_for("index") }}"><i class="fa fa-home"></i> {{ "Home"|translation(china_flag) }} </a>
+                            </li>
+                            <li><a><i class="fa fa-sort-amount-desc"></i> {{ "Ranks"|translation(china_flag) }} </a>
+                            </li>
+                            <li><a><i class="fa fa-line-chart"></i> {{ "Trend Chart"|translation(china_flag) }} </a>
+                            </li>
+                            <li><a><i class="fa fa-globe"></i> {{ "Geo Distribution"|translation(china_flag) }} </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="menu_section">
+                        <ul class="nav side-menu">
+                            <li><a href="{{ url_for("contact") }}"><i class="fa fa-phone"></i> {{ "Contact Us"|translation(china_flag) }} </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <!-- /sidebar menu -->
+            </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <nav>
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+
+                    <ul class="nav navbar-nav navbar-left">
+                        <div class="title_left">
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-left top_search" style="margin-bottom: 0px;margin-top: 5px">
+                                <span>
+                                    <h1 style="margin-bottom: 1px;margin-top: 1px"> {{ web_address }}</h1>
+                                </span>
+                            </div>
+                        </div>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <div class="title_right">
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search" style="margin-bottom: 5px;margin-top: 5px">
+                                <form class="col-lg-12" action="/report" method="get">
+                                    <div class="input-group" style="margin-bottom: 5px;margin-top: 5px">
+                                        <input type="text" class="form-control" placeholder='{{ "Please input the website"|translation(china_flag) }}' name="website_address" id="website_address_report">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit">Go!</button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <!-- top tiles -->
+            <div name="ranks_link" id="ranks_link" class="row tile_count" style="margin-bottom: 10px">
+                <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-sort-amount-desc"></i> Global Rank</span>
+                    <div class="count">{{ web_data['global_rank']['data'][samples_count - 1] }}</div>
+                    <span class="count_bottom"><i class="{{ web_data['global_rank']['color'] }}"><i class="fa {{ web_data['global_rank']['direction'] }}"></i>{{ web_data['global_rank']['last_change'] }} </i> From last month</span>
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-clock-o"></i> Load Time</span>
+                    <div class="count green">{{ web_data['load_time']['data'][samples_count - 1] }}</div>
+                    <span class="count_bottom"><i class="{{ web_data['load_time']['color'] }}"><i class="fa {{ web_data['load_time']['direction'] }}"></i>{{ web_data['load_time']['last_change'] }} </i> From last month</span>
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-user"></i> Daily User</span>
+                    <div class="count green">{{ web_data['daily_user']['data'][samples_count - 1] }}</div>
+                    <span class="count_bottom"><i class="{{ web_data['daily_user']['color'] }}"><i class="fa {{ web_data['daily_user']['direction'] }}"></i>{{ web_data['daily_user']['last_change'] }} </i> From last month</span>
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-copy"></i> Page Views per Visitor</span>
+                    <div class="count">{{ web_data['page_views_per_visitor']['data'][samples_count - 1] }}</div>
+                    <span class="count_bottom"><i class="{{ web_data['page_views_per_visitor']['color'] }}"><i class="fa {{ web_data['page_views_per_visitor']['direction'] }}"></i>{{ web_data['page_views_per_visitor']['last_change'] }} </i> From last month</span>
+                </div>
+            </div>
+            <!-- /top tiles -->
+
+            <div name="trends_link" id="trends_link" class="row">
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ "Trend Chart"|translation(china_flag) }} <small style="font-size: 65%; display: inline">{{ web_address }}</small></h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div id="echart_line_statistic" style="height:350px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Place Holder for ads</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div>Put some ads here</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div name="geo_link" id="geo_link" class="row">
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>{{ "Geo Distribution"|translation(china_flag) }}  <small style="font-size: 65%; display: inline">{{ web_address }}</small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div class="dashboard-widget-content">
+                                        <div class="col-md-4 hidden-small">
+                                            <table class="countries_list">
+                                                <thead>
+                                                <tr>
+                                                    <th>{{ "Country"|translation(china_flag) }}</th>
+                                                    <th>{{ "Users Contribution"|translation(china_flag) }}</th>
+                                                    <th>{{ "Rank"|translation(china_flag) }}</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for item in geo_contribution %}
+                                                    <tr>
+                                                        <td class="fs15 fw700 text-left">{{ item["country"] }}</td>
+                                                        <td class="fs15 fw700 text-right">{{ item["users"] }}</td>
+                                                        <td class="fs15 fw700 text-right">{{ item["rank"] }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div id="echart_geo_map" class="col-md-8 col-sm-12 col-xs-12" style="height:230px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Place Holder for ads</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div>Put some ads here</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div name="top_keys_sites" id="top_keys_sites" class="row">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div name="top_key_words" id="top_key_words" class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ "Top Keywords"|translation(china_flag) }}</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="countries_list">
+                                <thead>
+                                <tr>
+                                    <th>{{ "Key"|translation(china_flag) }}</th>
+                                    <th>{{ "Percentage"|translation(china_flag) }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in top_key_words %}
+                                    <tr>
+                                        <td class="fs15 fw700 text-left">{{ item["keyword"] }}</td>
+                                        <td class="fs15 fw700 text-left">{{ item["percent_of_search_traffic"] }}%</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div name="upstream_sites" id="upstream_sites" class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ "Upstream Sites"|translation(china_flag) }} <small style="font-size: 65%; display: inline">{{ web_address }}</small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="countries_list">
+                                <thead>
+                                <tr>
+                                    <th>{{ "Site"|translation(china_flag) }}</th>
+                                    <th>{{ "Percent Of Unique Visits"|translation(china_flag) }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in upstream_sites %}
+                                    <tr>
+                                        <td class="fs15 fw700 text-left">{{ item["site"] }}</td>
+                                        <td class="fs15 fw700 text-left">{{ item["percent_of_unique_visits"] }}%</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-5 col-xs-12">
+                    <div name="where_do_visitors_go_on" id="where_do_visitors_go_on" class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ "Where Do Visitors Go"|translation(china_flag) }} <small style="font-size: 65%; display: inline">{{ web_address }}</small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="countries_list">
+                                <thead>
+                                <tr>
+                                    <th>{{ "Subdomain"|translation(china_flag) }}</th>
+                                    <th>{{ "Percent Of Visitors"|translation(china_flag) }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in where_do_visitors_go_on %}
+                                    <tr>
+                                        <td class="fs15 fw700 text-left">{{ item["subdomain"] }}</td>
+                                        <td class="fs15 fw700 text-left">{{ item["percent_of_visitors"] }}%</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div name="top_keys_sites" id="top_keys_sites" class="row">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div name="related_sites" id="related_sites" class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ "Related Sites"|translation(china_flag) }}</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="countries_list">
+                                <thead>
+                                <tr>
+                                    <th>{{ "Site"|translation(china_flag) }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in related_sites %}
+                                    <tr>
+                                        <td class="fs15 fw700 text-left">{{ item }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div name="top_sites_linking_in" id="top_sites_linking_in" class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ "Top Sites Linking In"|translation(china_flag) }} <small style="font-size: 65%; display: inline">{{ web_address }}</small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="countries_list">
+                                <thead>
+                                <tr>
+                                    <th>{{ "Site"|translation(china_flag) }}</th>
+                                    <th>{{ "Page"|translation(china_flag) }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in top_sites_linking_in %}
+                                    <tr>
+                                        <td class="fs15 fw700 text-left">{{ item["site"] }}</td>
+                                        <td class="fs15 fw700 text-left">{{ item["page"] }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Place Holder for ads</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div>Put some ads here</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                {{ "Web Report By"|translation(china_flag) }} <a href="https://cincoai.com" class="green">CincoAI</a>
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="{{ url_for("static", filename="vendors/jquery/dist/jquery.min.js") }}"></script>
+<!-- Bootstrap -->
+<script src="{{ url_for("static", filename="vendors/bootstrap/dist/js/bootstrap.min.js") }}"></script>
+<!-- FastClick -->
+<script src="{{ url_for("static", filename="vendors/fastclick/lib/fastclick.js") }}"></script>
+<!-- NProgress -->
+<script src="{{ url_for("static", filename="vendors/nprogress/nprogress.js") }}"></script>
+<!-- Chart.js -->
+<script src="{{ url_for("static", filename="vendors/Chart.js/dist/Chart.min.js") }}"></script>
+<!-- gauge.js -->
+<script src="{{ url_for("static", filename="vendors/gauge.js/dist/gauge.min.js") }}"></script>
+<!-- bootstrap-progressbar -->
+<script src="{{ url_for("static", filename="vendors/bootstrap-progressbar/bootstrap-progressbar.min.js") }}"></script>
+<!-- iCheck -->
+<script src="{{ url_for("static", filename="vendors/iCheck/icheck.min.js") }}"></script>
+<!-- Skycons -->
+<script src="{{ url_for("static", filename="vendors/skycons/skycons.js") }}"></script>
+<!-- Flot -->
+<script src="{{ url_for("static", filename="vendors/Flot/jquery.flot.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/Flot/jquery.flot.pie.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/Flot/jquery.flot.time.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/Flot/jquery.flot.stack.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/Flot/jquery.flot.resize.js") }}"></script>
+<!-- Flot plugins -->
+<script src="{{ url_for("static", filename="vendors/flot.orderbars/js/jquery.flot.orderBars.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/flot-spline/js/jquery.flot.spline.min.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/flot.curvedlines/curvedLines.js") }}"></script>
+<!-- DateJS -->
+<script src="{{ url_for("static", filename="vendors/DateJS/build/date.js") }}"></script>
+<!-- JQVMap -->
+<script src="{{ url_for("static", filename="vendors/jqvmap/dist/jquery.vmap.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/jqvmap/dist/maps/jquery.vmap.world.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/jqvmap/examples/js/jquery.vmap.sampledata.js") }}"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="{{ url_for("static", filename="vendors/moment/min/moment.min.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/bootstrap-daterangepicker/daterangepicker.js") }}"></script>
+<!-- ECharts -->
+<script src="{{ url_for("static", filename="vendors/echarts/dist/echarts.min.js") }}"></script>
+<script src="{{ url_for("static", filename="vendors/echarts/map/js/world.js") }}"></script>
+
+<!-- Custom Theme Scripts -->
+<script src="{{ url_for("static", filename="build/js/custom.min.js") }}"></script>
+
+<script>
+    $(document).ready(function() {
+        // line chart ---------------------------------
+        var echartLine = echarts.init(document.getElementById('echart_line_statistic'));
+
+        echartLine.setOption({
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: [
+                    {% for item in web_data %}
+                        '{{ item|translation(china_flag) }}',
+                    {% endfor %}
+                ]
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    magicType: {
+                        show: true,
+                        title: {
+                            line: 'Line',
+                            bar: 'Bar'
+                        },
+                        type: ['line', 'bar']
+                    },
+                    restore: {
+                        show: true,
+                        title: "Restore"
+                    },
+                    saveAsImage: {
+                        show: true,
+                        title: "Save Image"
+                    }
+                }
+            },
+            calculable: true,
+            grid: {
+                x: 5,
+                y: 30,
+                x2: 5,
+                y2: 20
+            },
+            xAxis: [{
+                type : 'category',
+                position: 'bottom',
+                boundaryGap: true,
+                axisLine : {    // 轴线
+                    show: true,
+                    lineStyle: {
+                        color: 'green',
+                        type: 'solid',
+                        width: 2
+                    }
+                },
+                axisTick : {    // 轴标记
+                    show:true,
+                    length: 10,
+                    lineStyle: {
+                        color: 'red',
+                        type: 'solid',
+                        width: 2
+                    }
+                },
+                axisLabel : {
+                    show:true,
+                    interval: 'auto',    // {number}
+                    margin: 8,
+                    textStyle: {
+                        color: 'blue',
+                        fontFamily: 'sans-serif',
+                        fontSize: 15,
+                        fontStyle: 'italic',
+                        fontWeight: 'bold'
+                    }
+                },
+                splitLine : {
+                    show:true,
+                    lineStyle: {
+                        color: '#483d8b',
+                        type: 'dashed',
+                        width: 1
+                    }
+                },
+                data: [
+                    {% for timestamp in timestamps %}
+                        '{{ timestamp }}',
+                    {% endfor %}
+                ]
+            }],
+            yAxis: [
+                {% for item in web_data %}
+                    {
+                        type: 'value',
+                        name: '{{ item }}',
+                        show: false,
+                        min: {{ web_data[item]['y_low'] }},
+                        max: {{ web_data[item]['y_high'] }}
+                    },
+                {% endfor %}
+            ],
+            series: [
+                {% set index = 0 %}
+                {% for item in web_data %}
+                    {
+                        name: '{{ item|translation(china_flag) }}',
+                        type: 'line',
+                        smooth: true,
+                        yAxisIndex: {{ index }},
+                        data: [
+                            {% for value in web_data[item]['data'] %}
+                                {{ value }},
+                            {% endfor %}
+                        ]
+                    },
+                    {% set index = index + 1 %}
+                {% endfor %}
+            ]
+        });
+        // echart map
+        var echartMap = echarts.init(document.getElementById('echart_geo_map'));
+
+        echartMap.setOption({
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    var value = (params.value + '').split('.');
+                    value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,') + '.' + value[1];
+                    return params.seriesName + '<br/>' + params.name + ' : ' + value;
+                }
+            },
+            grid: {
+                x: 5,
+                y: 5,
+                x2: 5,
+                y2: 5
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                x: 'right',
+                y: 'center',
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        title: "Text View",
+                        lang: [
+                            "Text View",
+                            "Close",
+                            "Refresh",
+                        ],
+                        readOnly: false
+                    },
+                    restore: {
+                        show: true,
+                        title: "Restore"
+                    },
+                    saveAsImage: {
+                        show: true,
+                        title: "Save Image"
+                    }
+                }
+            },
+            series: [{
+                name: '用户分布',
+                type: 'map',
+                mapType: 'world',
+                roam: false,
+                itemStyle: {
+                    emphasis: {
+                        label: {
+                            show: true
+                        }
+                    }
+                },
+                data: [
+                    {% for item in geo_contribution %}
+                        {name: '{{ item["country"] }}', value: '{{ item["users"] }}'},
+                    {% endfor %}
+                ]
+            },
+                {
+                    name: '排名',
+                    type: 'map',
+                    mapType: 'world',
+                    roam: false,
+                    itemStyle: {
+                        emphasis: {
+                            label: {
+                                show: true
+                            }
+                        }
+                    },
+                    data: [
+                        {% for item in geo_contribution %}
+                            {name: '{{ item["country"] }}', value: '{{ item["rank"] }}'},
+                        {% endfor %}
+                    ]
+                }]
+        });
+    });
+</script>
+
+</body>
+</html>
