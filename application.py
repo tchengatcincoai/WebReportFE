@@ -2,29 +2,26 @@ import datetime
 import logging
 from flask import Flask, render_template, request, redirect, url_for, make_response
 from pymongo import MongoClient
-from elasticsearch import Elasticsearch
 from bson.json_util import dumps
 from utils.web_util import json_response, normalize_domain
 from utils.datetime_util import epoch_to_datetime
 from utils.email_util import send_feedback_email, TO_LIST
 from utils.ip_util import is_china_ip
 from db_bootstrap import SAMPLE_DB_DATA
-from constants import DATE_FORMAT_MONTH, DATE_FORMAT, TRANSLATION_MAP, COOKIE_CHINA_FLAG
+from constants import DATE_FORMAT_MONTH, DATE_FORMAT, TRANSLATION_MAP, COOKIE_CHINA_FLAG, ONLINE_MONGO_CLUSTER
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] (%(name)s) %(message)s')
 log = logging.getLogger(__name__)
 
 
 def connect():
-    client = MongoClient('localhost', 27017)
-    db = client['WebReportDB']
-    connection = db['WebReportCollection']
+    client = MongoClient(ONLINE_MONGO_CLUSTER)
+    db = client['WebReportDev']
+    connection = db['WebReportCollectionDev2']
     return connection
 
 
 application = Flask(__name__)
-application.config['ELASTICSEARCH_URL'] = 'http://localhost:9200/'
-es = Elasticsearch([application.config['ELASTICSEARCH_URL']])
 mongodb_connection = connect()
 
 
@@ -143,7 +140,7 @@ def report_page():
             web_data[item]['y_high'] = max_value + (0.1 + tmp_index) * diff_value
             # make y axises to be off by a little bit
             tmp_index += 0.01
-        geo_contribution = one_record['web_data'][-1]['geo_contribution']
+        geo_contribution = one_record['web_data'][-1]['geo_contribution'][0:5]
         top_key_words = one_record['web_data'][-1]['top_key_words']
         related_sites = one_record['web_data'][-1]['related_sites']
         upstream_sites = one_record['web_data'][-1]['upstream_sites']

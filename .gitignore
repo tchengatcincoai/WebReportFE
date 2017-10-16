@@ -1,4 +1,5 @@
 *.pyc
+utils/*.pyc
 .Python
 .idea/*
 WebReportFE-ENV/*

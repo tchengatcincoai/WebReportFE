@@ -190,7 +190,7 @@
                                                 <tbody>
                                                 {% for item in geo_contribution %}
                                                     <tr>
-                                                        <td class="fs15 fw700 text-left">{{ item["country"] }}</td>
+                                                        <td class="fs15 fw700 text-left">{{ item["country"]|translation(china_flag) }}</td>
                                                         <td class="fs15 fw700 text-right">{{ item["users"] }}</td>
                                                         <td class="fs15 fw700 text-right">{{ item["rank"] }}</td>
                                                     </tr>

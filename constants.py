@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+ONLINE_MONGO_CLUSTER='mongodb://warren:warren@cluster0-shard-00-00-kvqib.mongodb.net:27017,cluster0-shard-00-01-kvqib.mongodb.net:27017,cluster0-shard-00-02-kvqib.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'
+
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_MONTH = '%y-%m'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -194,5 +196,9 @@ TRANSLATION_MAP = {
     '\'s data': {
         ENGLISH: '',
         CHINESE: '的数据'
+    },
+    'O': {
+        ENGLISH: 'Others',
+        CHINESE: '其他'
     }
 }
