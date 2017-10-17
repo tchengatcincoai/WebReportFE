@@ -187,4 +187,4 @@ def _jinja2_filter_translation(in_string, china_flag):
 
 
 if __name__ == '__main__':
-    application.run(host='0.0.0.0')
+    application.run(host='0.0.0.0', processes=5)
