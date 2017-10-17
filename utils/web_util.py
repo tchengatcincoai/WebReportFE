@@ -16,6 +16,7 @@ def normalize_domain(domain):
     :return: String, normalized url
     '''
     try:
+        domain = domain.lower()
         if (domain.startswith('https://')):
             domain = domain[len('https://'):]
         elif (domain.startswith('http://')):
